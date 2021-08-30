@@ -8,5 +8,6 @@ public class AddressBookMain {
 		AddressBookFacilitiesImpl services=new AddressBookFacilitiesImpl();
 		services.createContact();
 		services.editContact();
+		services.deleteContact();
 	}
 }
