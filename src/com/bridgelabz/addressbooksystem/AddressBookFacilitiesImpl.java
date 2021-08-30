@@ -4,7 +4,7 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 	
 	Scanner scanner=new Scanner(System.in);
 	AddressBook addressbook;
-	public  void createContact() {
+	public  void createContacts() {
 		
 		ContactPerson[] contactList;
 		System.out.println("Enter number of contact you want to create");
@@ -37,7 +37,7 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		    
 			addressbook=new AddressBook(contactList);
 	}
-	public void editContact() {
+	public void editContacts() {
 			System.out.println("Enter phone number of person");
 			Long phoneNumber=scanner.nextLong();
 			scanner.nextLine();
@@ -74,7 +74,7 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 			}
 	}
 	
-	public void deleteContact() {
+	public void deleteContacts() {
 		System.out.println("Enter the phone number of contact to be deleted ");
 		Long phoneNumber=scanner.nextLong();
 		ContactPerson[] k=addressbook.getContactList();
