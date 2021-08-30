@@ -3,7 +3,9 @@ import java.util.Scanner;
 public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 	
 	Scanner scanner=new Scanner(System.in);
+	AddressBook addressbook;
 	public  void createContact() {
+		
 		ContactPerson[] contactList;
 		System.out.println("Enter number of contact you want to create");
 		int numberOfContact=scanner.nextInt();
@@ -33,7 +35,45 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 			contactList[index]=new ContactPerson(firstName, lastName, address, city, state, zip, phoneNumber, email);
 		}
 		    
-			AddressBook addressbook=new AddressBook(contactList);
+			addressbook=new AddressBook(contactList);
 	}
-	
+	public void editContact() {
+			System.out.println("Enter phone number of person");
+			Long phoneNumber=scanner.nextLong();
+			scanner.nextLine();
+			
+			for(ContactPerson detail:addressbook.getContactList()) {
+				if(phoneNumber.equals(detail.getPhoneNumber())){
+							
+					System.out.println("Enter new first name:");
+					detail.setFirstName(scanner.nextLine());
+					
+					System.out.println("Enter new last name:");
+					detail.setLastName(scanner.nextLine());
+					
+					System.out.println("Enter new address:");
+					detail.setAddress(scanner.nextLine());
+					
+					System.out.println("Enter new city:");
+					detail.setCity(scanner.nextLine());
+					
+					System.out.println("Enter new state:");
+					detail.setState(scanner.nextLine());
+					
+					System.out.println("Enter new zip");
+					detail.setZip(scanner.nextInt());
+					
+					System.out.println("Enter =ew phone number");
+					detail.setPhoneNumber(scanner.nextLong());
+					
+					scanner.nextLine();
+					
+					System.out.println("Enter new email");
+					detail.setEmail(scanner.nextLine());
+				}
+			}
+	}
 }
+			
+					
+			
