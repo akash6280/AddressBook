@@ -63,7 +63,7 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 					System.out.println("Enter new zip");
 					detail.setZip(scanner.nextInt());
 					
-					System.out.println("Enter =ew phone number");
+					System.out.println("Enter new phone number");
 					detail.setPhoneNumber(scanner.nextLong());
 					
 					scanner.nextLine();
@@ -73,7 +73,18 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 				}
 			}
 	}
+	
+	public void deleteContact() {
+		System.out.println("Enter the phone number of contact to be deleted ");
+		Long phoneNumber=scanner.nextLong();
+		ContactPerson[] k=addressbook.getContactList();
+		for(ContactPerson detail:addressbook.getContactList()) {
+			if(phoneNumber.equals(detail.getPhoneNumber())){
+				detail=null;
+			}
+		}
+	}
+	
 }
-			
 					
 			
