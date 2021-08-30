@@ -1,11 +1,12 @@
 package com.bridgelabz.addressbooksystem;
 
 public class AddressBook {
-	
+	    String name;
 		private  ContactPerson[] contactList;
 		
-	    AddressBook(ContactPerson[] contactList) {
+	    AddressBook(String name,ContactPerson[] contactList) {
 			this.contactList=contactList;
+			this.name=name;
 		}
 
 		public ContactPerson[] getContactList() {
