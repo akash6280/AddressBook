@@ -6,7 +6,7 @@ public class AddressBookMain {
 
 		System.out.println("Welcome To Address Book Program");
 		AddressBookFacilitiesImpl services=new AddressBookFacilitiesImpl();
-		services.createContacts();
+		services.createAddressBook();
 		
 	}
 }
