@@ -169,7 +169,14 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		}
 	}
 	
-	
+	public void searchPersonAcrossCity(String cityName) {
+		for(AddressBook addressBook:addressList) {
+			for(ContactPerson detail:addressBook.getContactList()) {
+				if(cityName.equals(detail.getState()))
+					System.out.println(detail);
+			}
+		}
+	}
 }
 					
 			
