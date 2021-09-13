@@ -159,6 +159,17 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 			break;
 		}
 	}
+		
+	public void searchPersonAcrossState(String stateName) {
+		for(AddressBook addressBook:addressList) {
+			for(ContactPerson detail:addressBook.getContactList()) {
+				if(stateName.equals(detail.getState()))
+					System.out.println(detail);
+			}
+		}
+	}
+	
+	
 }
 					
 			
