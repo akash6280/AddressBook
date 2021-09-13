@@ -1,55 +1,44 @@
 package com.bridgelabz.addressbooksystem;
+import java.util.LinkedList;
 import java.util.Scanner;
 public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 	
 	Scanner scanner=new Scanner(System.in);
-	AddressBook addressbook;
+	LinkedList<AddressBook> addressList=new LinkedList<>();
+	
 	public void createAddressBook() {
 		
 		System.out.println("Enter book name");
 		String bookName=scanner.nextLine();
 		
-		ContactPerson[] contactList;
+		LinkedList<ContactPerson> contactList=new LinkedList<>();
 		System.out.println("Enter number of contact you want to create");
 		int numberOfContact=scanner.nextInt();
-		contactList=new ContactPerson[numberOfContact];
+		
 		scanner.nextLine();
 		
 		for(int index=0;index<numberOfContact;index++) {
 			
-			System.out.println("Enter first name: ");
-			String firstName = scanner.nextLine();
-			System.out.println("Enter last name: ");
-			String lastName = scanner.nextLine();
-			System.out.println("Enter address: ");
-			String address = scanner.nextLine();
-			System.out.println("Enter city: ");
-			String city = scanner.nextLine();
-			System.out.println("Enter state: ");
-			String state = scanner.nextLine();
-			System.out.println("Enter Zip Code: ");
-			int zip = scanner.nextInt();
-			System.out.println("Enter Phone Number: ");
-			long phoneNumber = scanner.nextLong();
-			scanner.nextLine();
-			System.out.println("Enter email id: ");
-			String email = scanner.nextLine();
-			
-			contactList[index]=new ContactPerson(firstName, lastName, address, city, state, zip, phoneNumber, email);
+			ContactPerson contactPerson=createContacts();
+             
+			boolean flag=false;
+			for(int index1=0; index1< contactList.size();index1++) {
+				if(contactPerson.getFirstName().equals(contactList.get(index1).getFirstName())) {
+					System.out.println("Duplicate entry");
+					flag=true;
+					break;
+				}
+			}
+			if(flag)
+				continue;
+			else
+				contactList.add(contactPerson);
 		}
-		    
-			addressbook=new AddressBook(bookName,contactList);
+				
+			addressList.add(new AddressBook(bookName,contactList));
 	}
 	
-	public  void createContacts() {
-		
-		ContactPerson[] contactList;
-		System.out.println("Enter number of contact you want to create");
-		int numberOfContact=scanner.nextInt();
-		contactList=new ContactPerson[numberOfContact];
-		scanner.nextLine();
-		
-		for(int index=0;index<numberOfContact;index++) {
+	public  ContactPerson createContacts() {
 			
 			System.out.println("Enter first name: ");
 			String firstName = scanner.nextLine();
@@ -69,60 +58,107 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 			System.out.println("Enter email id: ");
 			String email = scanner.nextLine();
 			
-			contactList[index]=new ContactPerson(firstName, lastName, address, city, state, zip, phoneNumber, email);
-		}
-		    
-			addressbook=new AddressBook("first",contactList);
+			return new ContactPerson(firstName, lastName, address, city, state, zip, phoneNumber, email);
 	}
 	
 	public void editContacts() {
+			System.out.println("Enter book name in which you want to make changes");
+			String bookName=scanner.next();
 			System.out.println("Enter phone number of person");
 			Long phoneNumber=scanner.nextLong();
 			scanner.nextLine();
 			
-			for(ContactPerson detail:addressbook.getContactList()) {
-				if(phoneNumber.equals(detail.getPhoneNumber())){
-							
-					System.out.println("Enter new first name:");
-					detail.setFirstName(scanner.nextLine());
-					
-					System.out.println("Enter new last name:");
-					detail.setLastName(scanner.nextLine());
-					
-					System.out.println("Enter new address:");
-					detail.setAddress(scanner.nextLine());
-					
-					System.out.println("Enter new city:");
-					detail.setCity(scanner.nextLine());
-					
-					System.out.println("Enter new state:");
-					detail.setState(scanner.nextLine());
-					
-					System.out.println("Enter new zip");
-					detail.setZip(scanner.nextInt());
-					
-					System.out.println("Enter new phone number");
-					detail.setPhoneNumber(scanner.nextLong());
-					
-					scanner.nextLine();
-					
-					System.out.println("Enter new email");
-					detail.setEmail(scanner.nextLine());
+			for(AddressBook addressBook:addressList) {
+				
+				for(int index1=0; index1< addressList.size();index1++) {
+					if(bookName.equals(addressList.get(index1).getBookName())) {
+						
+						for(ContactPerson detail:addressBook.getContactList()) {
+							if(phoneNumber.equals(detail.getPhoneNumber())){
+										
+								System.out.println("Enter new first name:");
+								detail.setFirstName(scanner.nextLine());
+								
+								System.out.println("Enter new last name:");
+								detail.setLastName(scanner.nextLine());
+								
+								System.out.println("Enter new address:");
+								detail.setAddress(scanner.nextLine());
+								
+								System.out.println("Enter new city:");
+								detail.setCity(scanner.nextLine());
+								
+								System.out.println("Enter new state:");
+								detail.setState(scanner.nextLine());
+								
+								System.out.println("Enter new zip");
+								detail.setZip(scanner.nextInt());
+								
+								System.out.println("Enter new phone number");
+								detail.setPhoneNumber(scanner.nextLong());
+								
+								scanner.nextLine();
+								
+								System.out.println("Enter new email");
+								detail.setEmail(scanner.nextLine());
+							}
+						}
+					}
 				}
 			}
 	}
 	
+	
 	public void deleteContacts() {
+		System.out.println("Enter book name in which you want to make changes");
+		String bookName=scanner.nextLine();
 		System.out.println("Enter the phone number of contact to be deleted ");
-		Long phoneNumber=scanner.nextLong();
-		ContactPerson[] k=addressbook.getContactList();
-		for(ContactPerson detail:addressbook.getContactList()) {
-			if(phoneNumber.equals(detail.getPhoneNumber())){
-				detail=null;
-			}
+		long phoneNumber=scanner.nextLong();
+		int position=0;
+		for(AddressBook addressBook:addressList) {
+			++position;
+				if(bookName.equals(addressBook.getBookName())) {
+					for(ContactPerson detail:addressBook.getContactList()) {
+						if(phoneNumber==(detail.getPhoneNumber())){
+							addressList.get(position).getContactList().remove(detail);
+						}
+						
+					}
+				}
 		}
 	}
+	public void displayAddressBook() {
+		for(AddressBook addressBook:addressList) {
+			System.out.print(addressBook);
+			}
+	}
 	
+	public void modifyAddressBook() {
+		AddressBookFacilitiesImpl service=new AddressBookFacilitiesImpl();
+		System.out.println("Enter Book name you want to update ");
+		String bookName=scanner.nextLine();
+		System.out.println("Enter 1 for add 2 for delete 3 for edit");
+		int choice=scanner.nextInt();
+		scanner.nextLine();
+		switch (choice) {
+		case 1: ContactPerson contactPerson=createContacts();
+							for(int index=0; index< addressList.size();index++) {
+								if(bookName.equals(addressList.get(index).getBookName())) {
+									addressList.get(index).getContactList().add(contactPerson);
+								}
+							}
+			break;
+			
+		case 2: service.deleteContacts();
+			break;	
+			
+		case 3:	service.editContacts();
+			break;
+
+		default: System.out.println("wrong choice");
+			break;
+		}
+	}
 }
 					
 			
