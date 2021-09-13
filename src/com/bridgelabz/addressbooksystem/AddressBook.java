@@ -1,29 +1,33 @@
 package com.bridgelabz.addressbooksystem;
 
+import java.util.LinkedList;
+
 public class AddressBook {
-	    String name;
-		private  ContactPerson[] contactList;
+	    private String bookName;
+		private LinkedList<ContactPerson> contactList;
 		
-	    AddressBook(String name,ContactPerson[] contactList) {
-			this.contactList=contactList;
-			this.name=name;
+		public AddressBook(String bookName, LinkedList<ContactPerson> contactList) {
+			this.bookName = bookName;
+			this.contactList = contactList;
+		}
+		public String getBookName() {
+			return bookName;
 		}
 
-		public String getName() {
-			return name;
+		public void setBookName(String bookName) {
+			this.bookName = bookName;
 		}
 
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public ContactPerson[] getContactList() {
-			return contactList;
-		}
-
-		public void setContactList(ContactPerson[] contactList) {
+		public void setContactList(LinkedList<ContactPerson> contactList) {
 			this.contactList = contactList;
 		}
 
+		public LinkedList<ContactPerson> getContactList() {
+			return contactList;
+		}
+		@Override
+		public String toString() {
+			return "\nAddressBook [bookName=" + bookName + ", contactList=" + contactList + "]";
+		}
 	    
 }
