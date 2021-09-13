@@ -1,11 +1,13 @@
 package com.bridgelabz.addressbooksystem;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
 public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 	
 	Scanner scanner=new Scanner(System.in);
 	LinkedList<AddressBook> addressList=new LinkedList<>();
-	
+	HashMap<String, LinkedList<ContactPerson>> contactsByCity;
+	HashMap<String, LinkedList<ContactPerson>> contactsByState;
 	public void createAddressBook() {
 		
 		System.out.println("Enter book name");
@@ -58,7 +60,18 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 			System.out.println("Enter email id: ");
 			String email = scanner.nextLine();
 			
-			return new ContactPerson(firstName, lastName, address, city, state, zip, phoneNumber, email);
+			ContactPerson contactPerson=new  ContactPerson(firstName, lastName, address, city, state, zip, phoneNumber, email);
+			
+			if(contactsByCity.get(city) == null) {
+				contactsByCity.put(city,new LinkedList<>());
+			}
+			contactsByCity.get(city).add(contactPerson);
+			
+			if(contactsByCity.get(state) == null) {
+				contactsByCity.put(state,new LinkedList<>());
+			}
+			contactsByCity.get(state).add(contactPerson);
+			return contactPerson;
 	}
 	
 	public void editContacts() {
