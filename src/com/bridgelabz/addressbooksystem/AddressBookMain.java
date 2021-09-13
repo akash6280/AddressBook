@@ -13,7 +13,7 @@ public class AddressBookMain {
 		AddressBookFacilitiesImpl services=new AddressBookFacilitiesImpl();
 		
 		while(true) {
-			System.out.println("Enter 1 for create adress book \n 2 for Modify address book \n 3 for display address book \n 4 to search person with city name \n 5 to search person with state name\n 6 to exit");
+			System.out.println("Enter 1 for create adress book \n 2 for Modify address book \n 3 for display address book \n 4 to search person with city name \n 5 to search person with state name\n 6 To view count by city and state \n 7 To exit");
 			int choice=scanner.nextInt();
 			scanner.nextLine();
 			switch (choice) {
@@ -34,9 +34,12 @@ public class AddressBookMain {
 			case 5: System.out.println("Enter state name");
 					String stateName=scanner.nextLine();
 					services.searchPersonAcrossState(stateName);
-					break;	
+					break;
+					
+			case 6: services.countByCityAndState();
+					break;
 				
-			case 6:	System.exit(0);
+			case 7:	System.exit(0);
 			
 			default: System.out.println("wrong choice");
 				break;
