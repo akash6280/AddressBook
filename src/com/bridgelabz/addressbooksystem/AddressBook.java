@@ -10,14 +10,14 @@ public class AddressBook {
 			this.bookName = bookName;
 			this.contactList = contactList;
 		}
-
+  
 		public String getBookName() {
 			return bookName;
 		}
 
 		public void setBookName(String bookName) {
 			this.bookName = bookName;
-		}
+    }
 
 		public void setContactList(LinkedList<ContactPerson> contactList) {
 			this.contactList = contactList;
