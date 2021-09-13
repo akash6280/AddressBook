@@ -6,4 +6,6 @@ public interface AddressBookFacilitiesIF {
 	public void deleteContacts();
 	public void createAddressBook();
 	public void modifyAddressBook();
+	public void searchPersonAcrossCity(String cityName);
+	public void searchPersonAcrossState(String stateName);
 }
