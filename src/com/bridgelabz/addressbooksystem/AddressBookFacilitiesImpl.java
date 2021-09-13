@@ -1,6 +1,7 @@
 package com.bridgelabz.addressbooksystem;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Scanner;
 public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 	
@@ -189,6 +190,19 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 					System.out.println(detail);
 			}
 		}
+	}
+	
+	public void countByCityAndState() {
+		int countByCity=0;
+		int countByState=0;
+		for (HashMap.Entry<String, LinkedList<ContactPerson>> entry : contactsByCity.entrySet()) {
+			countByCity+=contactsByCity.get(entry.getKey()).size();
+		}
+		for (HashMap.Entry<String, LinkedList<ContactPerson>> entry : contactsByState.entrySet()) {
+			countByState+=contactsByState.get(entry.getKey()).size();
+		}
+		System.out.println("Count by state"+countByCity);
+		System.out.println("Count by state"+countByState);
 	}
 }
 					
