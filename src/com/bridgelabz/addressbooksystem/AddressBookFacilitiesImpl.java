@@ -177,21 +177,30 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 	}
 		
 	public void searchPersonAcrossState(String stateName) {
-		for(AddressBook addressBook:addressList) {
-			for(ContactPerson detail:addressBook.getContactList()) {
-				if(stateName.equals(detail.getState()))
-					System.out.println(detail);
-			}
-		}
+		addressList.stream()
+		.forEach(addressBook->addressBook.getContactList()
+		.stream().filter(contact->contact.getState().equals(stateName))
+		.forEach(System.out::println));
 	}
 	
 	public void searchPersonAcrossCity(String cityName) {
-		for(AddressBook addressBook:addressList) {
-			for(ContactPerson detail:addressBook.getContactList()) {
-				if(cityName.equals(detail.getState()))
-					System.out.println(detail);
-			}
+		addressList.stream()
+		.forEach(addressBook->addressBook.getContactList()
+		.stream().filter(contact->contact.getCity().equals(cityName))
+		.forEach(System.out::println));
+	}
+	
+	public void countByCityAndState() {
+		int countByCity=0;
+		int countByState=0;
+		for (HashMap.Entry<String, LinkedList<ContactPerson>> entry : contactsByCity.entrySet()) {
+			countByCity+=contactsByCity.get(entry.getKey()).size();
 		}
+		for (HashMap.Entry<String, LinkedList<ContactPerson>> entry : contactsByState.entrySet()) {
+			countByState+=contactsByState.get(entry.getKey()).size();
+		}
+		System.out.println("Count by state"+countByCity);
+		System.out.println("Count by state"+countByState);
 	}
 	
 	public void countByCityAndState() {
