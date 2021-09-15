@@ -199,6 +199,14 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		.filter(contact->contact.getCity().equals(cityName))
 		.count());
 	}
+	public void countByState(String stateName) {
+		
+		addressList.stream()
+		.forEach(addressBook->addressBook.getContactList()
+		.stream()
+		.filter(contact->contact.getState().equals(stateName))
+		.count());
+	}
 }
 					
 			
