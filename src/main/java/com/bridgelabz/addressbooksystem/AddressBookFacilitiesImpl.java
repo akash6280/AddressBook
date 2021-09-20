@@ -1,4 +1,5 @@
 package com.bridgelabz.addressbooksystem;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -207,12 +208,15 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		.filter(contact->contact.getState().equals(stateName))
 		.count());
 	}
-
-	@Override
-	public void countByCityAndState() {
-		// TODO Auto-generated method stub
-		
+	
+	public void sortByName() {
+		addressList.stream()
+		.forEach(addressBook->addressBook.getContactList()
+		.stream()
+		.sorted((contact1, contact2) -> contact1.getFirstName().compareTo(contact2.getFirstName()))
+		.forEach(System.out::println));
 	}
+
 	
 }
 					

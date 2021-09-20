@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 
 public class AddressBookMain {
-
+	public static String cityName,stateName;
 	public static void main(String[] args) {
 		Scanner scanner=new Scanner(System.in);
 		
@@ -27,19 +27,26 @@ public class AddressBookMain {
 				    break;
 				
 			case 4: System.out.println("Enter city name");
-					String cityName=scanner.nextLine();
+					cityName=scanner.nextLine();
 					services.searchPersonAcrossCity(cityName);	
 				    break;
 				
 			case 5: System.out.println("Enter state name");
-					String stateName=scanner.nextLine();
+					stateName=scanner.nextLine();
 					services.searchPersonAcrossState(stateName);
 					break;
 					
-			case 6: services.countByCityAndState();
+			case 6: System.out.println("Enter city name");
+					cityName=scanner.nextLine(); 
+					services.countByCity(cityName);
 					break;
+					
+			case 7: System.out.println("Enter state name");
+					stateName=scanner.nextLine(); 
+			     	services.countByState(stateName);
+					break;		
 				
-			case 7:	System.exit(0);
+			case 8:	System.exit(0);
 			
 			default: System.out.println("wrong choice");
 				break;

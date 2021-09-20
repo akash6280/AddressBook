@@ -8,5 +8,7 @@ public interface AddressBookFacilitiesIF {
 	public void modifyAddressBook();
 	public void searchPersonAcrossCity(String cityName);
 	public void searchPersonAcrossState(String stateName);
-	public void countByCityAndState();
+	public void countByCity(String cityName);
+	public void countByState(String stateName);
+	public void sortByName();
 }
