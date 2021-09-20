@@ -155,7 +155,7 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		case 1: ContactPerson contactPerson=createContacts();
 							for(int index=0; index< addressList.size();index++) {
 								if(bookName.equals(addressList.get(index).getBookName())) {
-									Predicate<ContactPerson> isPresentOrNot = c->c.getFirstName().equals(contactPerson.getFirstName());
+									Predicate	<ContactPerson> isPresentOrNot = c->c.getFirstName().equals(contactPerson.getFirstName());
 									boolean find = addressList.get(index).getContactList().stream().anyMatch(isPresentOrNot);
 									if(find) 
 										System.out.println("Duplicate entry");
