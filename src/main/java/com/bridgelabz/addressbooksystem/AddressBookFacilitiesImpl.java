@@ -71,7 +71,8 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 			if(!contactsByState.containsKey(state)) {
 				contactsByState.put(state,new LinkedList<>());
 			}
-			contactsByCity.get(state).add(contactPerson);
+			contactsByState.get(state).add(contactPerson);
+			
 			return contactPerson;
 	}
 	
@@ -248,10 +249,10 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 	}
 	public void writeDataToFile(IOService ioService) {
 		if(ioService.equals(IOService.CONSOLE_IO))
-			System.out.println("Writing data to  Console" + contactList);
+			System.out.println(addressList.get(0).getContactList());
 		
 		else if(ioService.equals(IOService.FILE_IO))
-			new AddressBookIOService().writeData(contactList);
+			new AddressBookIOService().writeData(addressList.get(0).getContactList());
 	}
 	
 	public void readDataFromFile() {
