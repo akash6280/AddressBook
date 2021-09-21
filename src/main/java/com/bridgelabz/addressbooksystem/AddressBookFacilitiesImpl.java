@@ -235,6 +235,14 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		.forEach(System.out::println));
 		
 	}
+	public void sortByZip() {
+		addressList.stream()
+		.forEach(addressBook->addressBook.getContactList()
+		.stream()
+		.sorted((contact1, contact2) -> String.valueOf(contact1.getZip()).compareTo(String.valueOf(contact2.getZip())))
+		.forEach(System.out::println));
+		
+	}
 	
 }
 					
