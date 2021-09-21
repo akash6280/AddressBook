@@ -5,11 +5,14 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Predicate;
 public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
-	
+	public enum IOService {
+		CONSOLE_IO, FILE_IO
+	}
 	Scanner scanner=new Scanner(System.in);
 	LinkedList<AddressBook> addressList=new LinkedList<>();
 	HashMap<String, LinkedList<ContactPerson>> contactsByCity=new HashMap<>();;
 	HashMap<String, LinkedList<ContactPerson>> contactsByState=new HashMap<>();;
+	LinkedList<ContactPerson> contactList=new LinkedList<>();
 	public void createAddressBook() {
 		
 		System.out.println("Enter book name");
@@ -242,6 +245,17 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		.sorted((contact1, contact2) -> String.valueOf(contact1.getZip()).compareTo(String.valueOf(contact2.getZip())))
 		.forEach(System.out::println));
 		
+	}
+	public void writeDataToFile(IOService ioService) {
+		if(ioService.equals(IOService.CONSOLE_IO))
+			System.out.println("Writing data to  Console" + contactList);
+		
+		else if(ioService.equals(IOService.FILE_IO))
+			new AddressBookIOService().writeData(contactList);
+	}
+	
+	public void readDataFromFile() {
+		new AddressBookIOService().readDataFromFile();
 	}
 	
 }
