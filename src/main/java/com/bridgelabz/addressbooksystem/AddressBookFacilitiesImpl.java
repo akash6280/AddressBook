@@ -227,6 +227,15 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		
 	}
 	
+	public void sortByState() {
+		addressList.stream()
+		.forEach(addressBook->addressBook.getContactList()
+		.stream()
+		.sorted((contact1, contact2) -> contact1.getState().compareTo(contact2.getState()))
+		.forEach(System.out::println));
+		
+	}
+	
 }
 					
 			
