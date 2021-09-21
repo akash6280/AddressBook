@@ -1,0 +1,2 @@
+firstName=agam, lastName=singh, address=i life, city=bangalore, state=karnataka, zip=560100, phoneNumber=8764758736, email=abc@gmail.com
+firstName=anubhav, lastName=singh, address=heritage villa, city=bangalore, state=karnataka, zip=562125, phoneNumber=9876543212, email=qwerty@gmail.com
