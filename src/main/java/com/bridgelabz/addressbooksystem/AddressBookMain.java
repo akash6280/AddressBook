@@ -1,11 +1,13 @@
 package com.bridgelabz.addressbooksystem;
 
 import java.util.Scanner;
+import com.bridgelabz.addressbooksystem.AddressBookFacilitiesImpl.IOService;
 
 
 
 public class AddressBookMain {
 	public static String cityName,stateName;
+	public static int option;;
 	public static void main(String[] args) {
 		Scanner scanner=new Scanner(System.in);
 		
@@ -13,7 +15,7 @@ public class AddressBookMain {
 		AddressBookFacilitiesImpl services=new AddressBookFacilitiesImpl();
 		
 		while(true) {
-			System.out.println("Enter 1 for create adress book \n 2 for Modify address book \n 3 for display address book \n 4 to search person with city name \n 5 to search person with state name\n 6 To view count by city and state \n 7 To exit");
+			System.out.println("Enter 1 For create adress book \n 2 For Modify address book \n 3 For display address book \n 4 To search person  \n 5 To view count \n 6 Perform File IO  operations b \n 7 To exit");
 			int choice=scanner.nextInt();
 			scanner.nextLine();
 			switch (choice) {
@@ -26,27 +28,40 @@ public class AddressBookMain {
 			case 3: services.displayAddressBook();	
 				    break;
 				
-			case 4: System.out.println("Enter city name");
-					cityName=scanner.nextLine();
-					services.searchPersonAcrossCity(cityName);	
+			case 4: System.out.println("Enter 1 to search by city name \n 2 to search by state name");
+					option=scanner.nextInt();
+					if(option==1){
+							cityName=scanner.next();
+							services.searchPersonAcrossCity(cityName);
+						}
+					else{
+							stateName=scanner.next();
+							services.searchPersonAcrossState(stateName);
+						}
 				    break;
 				
-			case 5: System.out.println("Enter state name");
-					stateName=scanner.nextLine();
-					services.searchPersonAcrossState(stateName);
+			case 5: System.out.println("Enter 1 to count by city name \n 2 to count by state name");
+					option=scanner.nextInt();
+					if(option==1){
+						cityName=scanner.next();
+						services.countByCity(cityName);
+					}
+					else{
+						stateName=scanner.next();
+						services.countByState(stateName);
+					}
 					break;
 					
-			case 6: System.out.println("Enter city name");
-					cityName=scanner.nextLine(); 
-					services.countByCity(cityName);
+			case 6: System.out.println("Enter 1 to perform write to file \n 2 to read from file");
+					option=scanner.nextInt();
+					if(option==1) {
+						services.writeDataToFile(IOService.FILE_IO);
+					}
+					else {
+						services.readDataFromFile();;
+					}
 					break;
-					
-			case 7: System.out.println("Enter state name");
-					stateName=scanner.nextLine(); 
-			     	services.countByState(stateName);
-					break;		
-				
-			case 8:	System.exit(0);
+			case 7: System.exit(0);
 			
 			default: System.out.println("wrong choice");
 				break;
