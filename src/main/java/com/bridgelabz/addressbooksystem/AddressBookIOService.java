@@ -34,23 +34,19 @@ public class AddressBookIOService {
     		}
     	}
 	
-	public List<String> readDataFromFile() {
+	public void readDataFromFile() {
 			
 			List<String> addressBookList = new ArrayList<String>();
 			
 			try {
 				Files.lines(new File(ADDRESSBOOK_FILE_NAME).toPath())
-					.map(contact -> contact.trim())
-					.forEach(contact -> {
-						System.out.println(contact);
-						addressBookList.add(contact);
-				});
+					.map(line -> line.trim())
+					.forEach(System.out::println);
 				
 			}
 			catch(IOException e){
 				e.printStackTrace();
 			}
-			return addressBookList;
 		}
 
 }
