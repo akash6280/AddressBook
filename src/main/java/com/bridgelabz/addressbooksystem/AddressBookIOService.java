@@ -75,5 +75,28 @@ public class AddressBookIOService {
 		 
 		 
 	 }
+	 
+	 public void readFromCsv() {
+			try {
+		            Reader reader = Files.newBufferedReader(Paths.get(ADDRESSBOOK_FILE_NAME_CSV));
+		            CSVReader csvReader = new CSVReader(reader);
+		        	List<String[]> records = csvReader.readAll();
+		        	for (String[] record : records) {
+		        		System.out.println("Address: "+record[0]);
+		        		System.out.println("City: "+record[1]);
+		        		System.out.println("Email "+record[2]);
+		        		System.out.println("First Name: "+record[3]);
+		        		System.out.println("Last Name: "+record[4]);
+		        		System.out.println("Phone Number: "+record[5]);
+		        		System.out.println("State: "+record[6]);
+		        		System.out.println("Zip"+record[7]);
+		        	}
+		        	
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+	 
 
 }
