@@ -15,7 +15,7 @@ public class AddressBookMain {
 		AddressBookFacilitiesImpl services=new AddressBookFacilitiesImpl();
 		
 		while(true) {
-			System.out.println("Enter 1 For create adress book \n 2 For Modify address book \n 3 For display address book \n 4 To search person  \n 5 To view count \n 6 Perform File IO  operations b \n 7 To exit");
+			System.out.println("Enter 1 For create adress book \n 2 For Modify address book \n 3 For display address book \n 4 To search person  \n 5 To view count \n 6 Perform write operations b \n 7 To exit");
 			int choice=scanner.nextInt();
 			scanner.nextLine();
 			switch (choice) {
@@ -52,13 +52,13 @@ public class AddressBookMain {
 					}
 					break;
 					
-			case 6: System.out.println("Enter 1 to perform write to file \n 2 to read from file");
+			case 6: System.out.println("Enter 1 to write to txt file \n 2 to write to csv file");
 					option=scanner.nextInt();
 					if(option==1) {
-						services.writeDataToFile(IOService.FILE_IO);
+						services.writeData(IOService.FILE_IO);
 					}
 					else {
-						services.readDataFromFile();;
+						services.writeData(IOService.CSV_IO);
 					}
 					break;
 			case 7: System.exit(0);
