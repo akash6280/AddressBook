@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.function.Predicate;
 public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 	public enum IOService {
-		CONSOLE_IO, FILE_IO, CSV_IO
+		CONSOLE_IO, FILE_IO, CSV_IO,JSON_IO
 	}
 	Scanner scanner=new Scanner(System.in);
 	LinkedList<AddressBook> addressList=new LinkedList<>();
@@ -256,6 +256,8 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		
 		else if(ioService.equals(IOService.CSV_IO))
 			new AddressBookIOService().writeDataToCsvFile(addressList.get(0).getContactList());
+		else
+			new AddressBookIOService().writeDatatoJSON(addressList.get(0).getContactList());
 			
 	}
 	
