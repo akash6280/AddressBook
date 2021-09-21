@@ -1,6 +1,7 @@
 package com.bridgelabz.addressbooksystem;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -8,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.Gson;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
@@ -22,6 +25,7 @@ public class AddressBookIOService {
 
     public static String ADDRESSBOOK_FILE_NAME_TXT = "addressbook-file.txt";
     public static String ADDRESSBOOK_FILE_NAME_CSV = "addressbook-file.csv";
+    public static String ADDRESSBOOK_FILE_NAME_JSON = "addressbook-file.json";
 
     public void writeDataToTextFile(List<ContactPerson> contactList) {
         StringBuffer empBuffer = new StringBuffer();
@@ -96,6 +100,19 @@ public class AddressBookIOService {
 				e.printStackTrace();
 			}
 		}
+	 
+	 public void writeDatatoJSON(List<ContactPerson> contactList) {
+			FileWriter writer;
+			try {
+				writer = new FileWriter(ADDRESSBOOK_FILE_NAME_JSON);
+				writer.write(new Gson().toJson(contactList));
+				writer.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+
 
 	 
 
