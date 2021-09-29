@@ -1,18 +1,21 @@
 package com.bridgelabz.addressbooksystem;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Predicate;
+
 public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 	public enum IOService {
-		CONSOLE_IO, FILE_IO, CSV_IO,JSON_IO
+		CONSOLE_IO, FILE_IO, CSV_IO,JSON_IO,DB_IO
 	}
 	Scanner scanner=new Scanner(System.in);
 	LinkedList<AddressBook> addressList=new LinkedList<>();
 	HashMap<String, LinkedList<ContactPerson>> contactsByCity=new HashMap<>();;
 	HashMap<String, LinkedList<ContactPerson>> contactsByState=new HashMap<>();;
-	LinkedList<ContactPerson> contactList=new LinkedList<>();
+	List<ContactPerson> contactList=new ArrayList<>();
 	public void createAddressBook() {
 		
 		System.out.println("Enter book name");
@@ -261,9 +264,14 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 			
 	}
 	
-	public void readDataFromFile() {
-		new AddressBookIOService().readDataFromTextFile();
-	}
+	public List<ContactPerson> readContactData(IOService ioService) {
+        if(ioService.equals(IOService.DB_IO))
+    		this.contactList = new AddressBookDBService().readData();
+        
+    		return this.contactList;
+    	}
+	
+	
 	
 }
 					
