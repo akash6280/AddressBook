@@ -6,11 +6,11 @@ public class ContactPerson {
 	private String address;
 	private String city;
 	private String state;
-	private int zip;
+	private long zip;
 	private long phoneNumber;
 	private String email;
 	
-	public ContactPerson(String firstName, String lastName, String address, String city, String state, int zip,long phoneNumber, String email) {
+	public ContactPerson(String firstName, String lastName, String address, String city, String state, long zip,long phoneNumber, String email) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
@@ -61,11 +61,11 @@ public class ContactPerson {
 		this.state = state;
 	}
 
-	public int getZip() {
+	public long getZip() {
 		return zip;
 	}
 
-	public void setZip(int zip) {
+	public void setZip(long zip) {
 		this.zip = zip;
 	}
 
