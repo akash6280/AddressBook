@@ -1,4 +1,5 @@
 package com.bridgelabz.addressbooksystem;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -291,8 +292,11 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		List<ContactPerson> contactDataList = new AddressBookDBService().getContactData(firstName);
 		return contactDataList.get(0).equals(getContactData(firstName));
 	}	
-	
-	
+	 
+
+	public List<ContactPerson> getContactsInADateRange(LocalDate startDate, LocalDate endDate) {
+		return new AddressBookDBService().getContactBetweenDateRange(startDate, endDate); 
+	}
 }
 					
 			
