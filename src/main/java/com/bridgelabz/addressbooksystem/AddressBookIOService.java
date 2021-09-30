@@ -1,6 +1,8 @@
 package com.bridgelabz.addressbooksystem;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
@@ -8,6 +10,7 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -42,26 +45,24 @@ public class AddressBookIOService {
         }
     }
         
-    public void printData() {
-    		try {
-    			Files.lines(new File(ADDRESSBOOK_FILE_NAME_TXT).toPath()).forEach(System.out::println);
-    		} catch(IOException e) {
-    			e.printStackTrace(); 
-    		}
-    	}
-	
-	public void readDataFromTextFile() {
-			
-			try {
-				Files.lines(new File(ADDRESSBOOK_FILE_NAME_TXT).toPath())
-					.map(line -> line.trim())
-					.forEach(System.out::println);
-				
-			}
-			catch(IOException e){
-				e.printStackTrace();
-			}
+    public List<String> readDataFromTextFile() {
+	    List<String> contactList = new ArrayList<>();
+		try {
+			Files.lines(new File(ADDRESSBOOK_FILE_NAME_TXT).toPath())
+				.map(contact -> contact.trim())
+				.forEach(contact -> {
+					System.out.println(contact);
+					contactList.add(contact);
+				});
+
+
 		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
+		return contactList;
+	}
+
 	
 	 public void writeDataToCsvFile(List<ContactPerson> contactList) {
 		 try(
@@ -80,11 +81,12 @@ public class AddressBookIOService {
 		 
 	 }
 	 
-	 public void readFromCsv() {
+	 public List<String[]> readDataFromCsvFile() {
+		 List<String[]> records = null;
 			try {
 		            Reader reader = Files.newBufferedReader(Paths.get(ADDRESSBOOK_FILE_NAME_CSV));
 		            CSVReader csvReader = new CSVReader(reader);
-		        	List<String[]> records = csvReader.readAll();
+		        	records = csvReader.readAll();
 		        	for (String[] record : records) {
 		        		System.out.println("Address: "+record[0]);
 		        		System.out.println("City: "+record[1]);
@@ -95,13 +97,14 @@ public class AddressBookIOService {
 		        		System.out.println("State: "+record[6]);
 		        		System.out.println("Zip"+record[7]);
 		        	}
-		        	
+
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
+			return records;
 		}
 	 
-	 public void writeDatatoJSON(List<ContactPerson> contactList) {
+	 public void writeDataToJSONFile(List<ContactPerson> contactList) {
 			FileWriter writer;
 			try {
 				writer = new FileWriter(ADDRESSBOOK_FILE_NAME_JSON);
@@ -112,6 +115,29 @@ public class AddressBookIOService {
 			}
 
 		}
+	 
+	 public List<ContactPerson> readDataFromJSONFile(){
+		 	try {
+	            Gson gson = new Gson();
+	            BufferedReader br = new BufferedReader(new FileReader(ADDRESSBOOK_FILE_NAME_JSON));
+	            ContactPerson[] contactsFile = gson.fromJson(br, ContactPerson[].class);
+	            List<ContactPerson> contactList = Arrays.asList(contactsFile);
+	            for (ContactPerson contact  : contactList) {
+	        		System.out.println("Address: "+contact.getAddress());
+	        		System.out.println("City: "+contact.getCity());
+	        		System.out.println("Email "+contact.getEmail());
+	        		System.out.println("First Name: "+contact.getFirstName());
+	        		System.out.println("Last Name: "+contact.getLastName());
+	        		System.out.println("Phone Number: "+contact.getPhoneNumber());
+	        		System.out.println("State: "+contact.getState());
+	        		System.out.println("Zip:" +contact.getZip());
+	        	}
+	            return contactList;
+	        }catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+	 }
 
 
 	 
