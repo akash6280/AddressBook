@@ -48,5 +48,10 @@ public class AddressBookFileIOTest {
 		Assert.assertEquals(2,contactList.size());
 	}
 	
-
+	@Test
+	public void whenDataReadFromJSONFile_ShouldMatchCount() {
+		AddressBookFileService addressbookservice=new AddressBookFileService();
+		List<ContactPerson> contactList=addressbookservice.readDataFromJSONFile();
+		Assert.assertEquals(2,contactList.size());
+	}
 }
