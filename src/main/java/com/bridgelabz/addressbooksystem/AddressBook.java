@@ -1,12 +1,13 @@
 package com.bridgelabz.addressbooksystem;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class AddressBook {
 	    private String bookName;
-		private LinkedList<ContactPerson> contactList;
+		private List<ContactPerson> contactList;
 		
-		public AddressBook(String bookName, LinkedList<ContactPerson> contactList) {
+		public AddressBook(String bookName, List<ContactPerson> contactList) {
 			this.bookName = bookName;
 			this.contactList = contactList;
 		}
@@ -18,11 +19,11 @@ public class AddressBook {
 			this.bookName = bookName;
 		}
 
-		public void setContactList(LinkedList<ContactPerson> contactList) {
+		public void setContactList(List<ContactPerson> contactList) {
 			this.contactList = contactList;
 		}
 
-		public LinkedList<ContactPerson> getContactList() {
+		public List<ContactPerson> getContactList() {
 			return contactList;
 		}
 		@Override
