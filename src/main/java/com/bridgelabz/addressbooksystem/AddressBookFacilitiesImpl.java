@@ -9,11 +9,8 @@ import java.util.Scanner;
 import java.util.function.Predicate;
 
 public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
-	public enum IOService {
-		CONSOLE_IO, FILE_IO, CSV_IO,JSON_IO,DB_IO
-	}
 	Scanner scanner=new Scanner(System.in);
-	LinkedList<AddressBook> addressList=new LinkedList<>();
+	List<AddressBook> addressList=new ArrayList<>();
 	HashMap<String, LinkedList<ContactPerson>> contactsByCity=new HashMap<>();;
 	HashMap<String, LinkedList<ContactPerson>> contactsByState=new HashMap<>();;
 	List<ContactPerson> contactList=new ArrayList<>();
@@ -257,13 +254,29 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		if(ioService.equals(IOService.CONSOLE_IO))
 			System.out.println(addressList.get(0).getContactList());
 		
-		else if(ioService.equals(IOService.FILE_IO))
+		if(ioService.equals(IOService.FILE_IO))
 			new AddressBookIOService().writeDataToTextFile(addressList.get(0).getContactList());
 		
-		else if(ioService.equals(IOService.CSV_IO))
+		if(ioService.equals(IOService.CSV_IO))
 			new AddressBookIOService().writeDataToCsvFile(addressList.get(0).getContactList());
-		else
-			new AddressBookIOService().writeDatatoJSON(addressList.get(0).getContactList());
+		
+		if(ioService.equals(IOService.JSON_IO))
+			new AddressBookIOService().writeDataToJSONFile(addressList.get(0).getContactList());
+			
+	}
+	
+	public void readData(IOService ioService) {
+		if(ioService.equals(IOService.CONSOLE_IO))
+			new AddressBookFacilitiesImpl().createAddressBook();
+		
+		if(ioService.equals(IOService.FILE_IO))
+			new AddressBookIOService().readDataFromTextFile();
+		
+		if(ioService.equals(IOService.CSV_IO))
+			new AddressBookIOService().readDataFromCsvFile();
+		
+		if(ioService.equals(IOService.JSON_IO))
+			new AddressBookIOService().readDataFromJSONFile();
 			
 	}
 	
