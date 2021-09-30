@@ -19,4 +19,13 @@ public class AddressBookDBIOTest {
 		List<ContactPerson> contactList =addressBookService.readContactData(IOService.DB_IO);
 		Assert.assertEquals(6, contactList.size());
 	}
+	
+	@Test
+	public void givenNewPhoneNumberForContact_WhenUpdated_ShouldSyncWithDB() {
+		AddressBookFacilitiesImpl addressBookService=new AddressBookFacilitiesImpl();
+		List<ContactPerson> contactList = addressBookService.readContactData(IOService.DB_IO);
+		addressBookService.updateLastName("yash","yash@gmail.com");
+		boolean result = addressBookService.checkContactInSyncWithDB("yash");
+		Assert.assertTrue(result);
+	}
 }
