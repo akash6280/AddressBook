@@ -61,4 +61,11 @@ public class AddressBookFileIOTest {
 		count = Files.lines(Paths.get(AddressBookFileService.ADDRESSBOOK_FILE_NAME_TXT)).count();
 		Assert.assertEquals(2,count);		
 	}
+	
+	@Test
+	public void givenContactDetail_ShouldAddToCSVFile() throws IOException {
+		addressbookservice.writeData(IOService.CSV_IO);
+		count= Files.lines(Paths.get(AddressBookFileService.ADDRESSBOOK_FILE_NAME_CSV)).count();
+		Assert.assertEquals(2,count);		
+	}
 }
