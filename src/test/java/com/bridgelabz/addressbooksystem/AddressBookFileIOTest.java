@@ -68,4 +68,11 @@ public class AddressBookFileIOTest {
 		count= Files.lines(Paths.get(AddressBookFileService.ADDRESSBOOK_FILE_NAME_CSV)).count();
 		Assert.assertEquals(2,count);		
 	}
+	
+	@Test
+	public void givenContactDetail_ShouldAddToJSONFile() throws IOException {
+		addressbookservice.writeData(IOService.JSON_IO);
+		count = Files.lines(Paths.get(AddressBookFileService.ADDRESSBOOK_FILE_NAME_JSON)).count();
+		Assert.assertEquals(2,count);		
+	}
 }
