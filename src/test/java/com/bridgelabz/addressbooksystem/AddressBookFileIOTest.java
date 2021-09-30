@@ -54,4 +54,11 @@ public class AddressBookFileIOTest {
 		List<ContactPerson> contactList=addressbookservice.readDataFromJSONFile();
 		Assert.assertEquals(2,contactList.size());
 	}
+	
+	@Test
+	public void givenContactDetails_ShouldAddToTextFile() throws IOException {
+		addressbookservice.writeData(IOService.FILE_IO);
+		count = Files.lines(Paths.get(AddressBookFileService.ADDRESSBOOK_FILE_NAME_TXT)).count();
+		Assert.assertEquals(2,count);		
+	}
 }
