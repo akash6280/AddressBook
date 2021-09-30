@@ -16,6 +16,8 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 	HashMap<String, LinkedList<ContactPerson>> contactsByCity=new HashMap<>();;
 	HashMap<String, LinkedList<ContactPerson>> contactsByState=new HashMap<>();;
 	List<ContactPerson> contactList=new ArrayList<>();
+	
+
 	public void createAddressBook() {
 		
 		System.out.println("Enter book name");
@@ -270,7 +272,25 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
         
     		return this.contactList;
     	}
-	
+
+	public void updateLastName(String firstName, String email) {
+		int result =new AddressBookDBService().updateContactData(firstName,email);
+		if(result == 0) return;
+		ContactPerson contact = this.getContactData(firstName);
+		if(contact != null) contact.setEmail(email);
+		}
+
+	private ContactPerson getContactData(String firstName) {
+		return this.contactList.stream()
+				.filter(contact->contact.getFirstName().equals(firstName))
+				.findFirst()
+				.orElse(null);
+	}
+
+	public boolean checkContactInSyncWithDB(String firstName) {
+		List<ContactPerson> contactDataList = new AddressBookDBService().getContactData(firstName);
+		return contactDataList.get(0).equals(getContactData(firstName));
+	}	
 	
 	
 }
