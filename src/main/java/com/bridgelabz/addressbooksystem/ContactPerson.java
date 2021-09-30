@@ -1,5 +1,7 @@
 package com.bridgelabz.addressbooksystem;
 
+import java.util.Objects;
+
 public class ContactPerson {
 	private String firstName;
 	private String lastName;
@@ -90,6 +92,22 @@ public class ContactPerson {
 		return "firstName=" + firstName + ", lastName=" + lastName + ", address=" + address + ", city="
 				+ city + ", state=" + state + ", zip=" + zip + ", phoneNumber=" + phoneNumber + ", email=" + email;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ContactPerson other = (ContactPerson) obj;
+		return Objects.equals(address, other.address) && Objects.equals(city, other.city)
+				&& Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
+				&& Objects.equals(lastName, other.lastName) && phoneNumber == other.phoneNumber
+				&& Objects.equals(state, other.state) && zip == other.zip;
+	}
+	
 	
 
 }
