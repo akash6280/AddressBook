@@ -41,6 +41,12 @@ public class AddressBookFileIOTest {
 		Assert.assertEquals(2,contactList.size());
 	}
 	
+	@Test
+	public void whenDataReadFromCSVFile_ShouldMatchCount() {
+		AddressBookFileService addressbookservice=new AddressBookFileService();
+		List<String[]> contactList=addressbookservice.readDataFromCsvFile();
+		Assert.assertEquals(2,contactList.size());
+	}
 	
 
 }
