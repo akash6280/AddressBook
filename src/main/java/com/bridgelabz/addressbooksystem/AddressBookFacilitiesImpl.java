@@ -250,38 +250,38 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		.forEach(System.out::println));
 		
 	}
-	public void writeData(IOService ioService) {
-		if(ioService.equals(IOService.CONSOLE_IO))
+	public void writeData(IOEnum ioType) {
+		if(ioType.equals(IOEnum.CONSOLE_IO))
 			System.out.println(addressList.get(0).getContactList());
 		
-		if(ioService.equals(IOService.FILE_IO))
-			new AddressBookIOService().writeDataToTextFile(addressList.get(0).getContactList());
+		if(ioType.equals(IOEnum.FILE_IO))
+			new AddressBookTextFileService().writeDataToTextFile(addressList.get(0).getContactList());
 		
-		if(ioService.equals(IOService.CSV_IO))
-			new AddressBookIOService().writeDataToCsvFile(addressList.get(0).getContactList());
+		if(ioType.equals(IOEnum.CSV_IO))
+			new AddressBookCSVService().writeDataToCsvFile(addressList.get(0).getContactList());
 		
-		if(ioService.equals(IOService.JSON_IO))
-			new AddressBookIOService().writeDataToJSONFile(addressList.get(0).getContactList());
+		if(ioType.equals(IOEnum.JSON_IO))
+			new AddressBookJSONService().writeDataToJSONFile(addressList.get(0).getContactList());
 			
 	}
 	
-	public void readData(IOService ioService) {
-		if(ioService.equals(IOService.CONSOLE_IO))
+	public void readData(IOEnum ioType) {
+		if(ioType.equals(IOEnum.CONSOLE_IO))
 			new AddressBookFacilitiesImpl().createAddressBook();
 		
-		if(ioService.equals(IOService.FILE_IO))
-			new AddressBookIOService().readDataFromTextFile();
+		if(ioType.equals(IOEnum.FILE_IO))
+			new AddressBookTextFileService().readDataFromTextFile();
 		
-		if(ioService.equals(IOService.CSV_IO))
-			new AddressBookIOService().readDataFromCsvFile();
+		if(ioType.equals(IOEnum.CSV_IO))
+			new AddressBookCSVService().readDataFromCsvFile();
 		
-		if(ioService.equals(IOService.JSON_IO))
-			new AddressBookIOService().readDataFromJSONFile();
+		if(ioType.equals(IOEnum.JSON_IO))
+			new AddressBookJSONService().readDataFromJSONFile();
 			
 	}
 	
-	public List<ContactPerson> readContactData(IOService ioService) {
-        if(ioService.equals(IOService.DB_IO))
+	public List<ContactPerson> readContactData(IOEnum ioService) {
+        if(ioService.equals(IOEnum.DB_IO))
     		this.contactList = new AddressBookDBService().readData();
         
     		return this.contactList;
