@@ -19,6 +19,7 @@ public class AddressBookDBService {
 	private PreparedStatement addressBookDataStatementToUpdate;
 	private PreparedStatement addressBookDataStatementForDateRange;
 	private PreparedStatement addressBookDataStatementForContactInCity;
+	private PreparedStatement addressBookDataStatementForContactInState;
 	private static AddressBookDBService addressBookDBService;
 	
 	public static AddressBookDBService getInstance(){
@@ -174,6 +175,35 @@ public class AddressBookDBService {
 			Connection connection = this.getConnection();
 			String sql=	"select * from contact c,address a where c.contactID=a.contactID and city=?";
 			addressBookDataStatementForContactInCity = connection.prepareStatement(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public  List<Contact> getContactInState(String state) {
+		if(state.isBlank())
+			throw new AddressBookException(ExceptionType.EMPTY_STRING,"Entered empty string");
+		List<Contact> contactList = null;
+		if (this.addressBookDataStatementForContactInState == null)
+			this.prepareStatementToGetContactInAState();
+		try {
+			addressBookDataStatementForContactInState.setString(1,state);
+			ResultSet resultSet = addressBookDataStatementForContactInState.executeQuery();
+			contactList = this.getContactData(resultSet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch(NullPointerException e) {
+			throw new AddressBookException(ExceptionType.NULL_STRING,"Entered null string");
+		}
+		return contactList;	
+	}
+	
+	private void prepareStatementToGetContactInAState() {
+		try {
+			Connection connection = this.getConnection();
+			String sql=	"select * from contact c,address a where c.contactID=a.contactID and state=?";
+			addressBookDataStatementForContactInState = connection.prepareStatement(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
