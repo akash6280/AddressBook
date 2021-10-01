@@ -44,4 +44,11 @@ public class AddressBookDBIOTest {
 		List<Contact> contactList = addressBookService.getContactInCity("bangalore");
 		Assert.assertEquals(2,contactList.size());
 	}
+	
+	@Test
+	public void givenState_WhenQueried_ShouldReturnContactInThatState(){
+		AddressBookFacilitiesImpl addressBookService=new AddressBookFacilitiesImpl();
+		List<Contact> contactList = addressBookService.getContactInState("karnataka");
+		Assert.assertEquals(2,contactList.size());
+	}
 }
