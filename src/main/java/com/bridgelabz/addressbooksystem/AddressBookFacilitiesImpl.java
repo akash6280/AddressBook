@@ -311,6 +311,11 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		return new AddressBookDBService().getContactBetweenDateRange(startDate, endDate); 
 	}
 
+
+	public List<Contact> getContactInCity(String city) {
+		return new AddressBookDBService().getContactInCity(city);
+	}
+
 }
 					
 			
