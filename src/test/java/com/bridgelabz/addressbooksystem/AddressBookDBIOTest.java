@@ -55,10 +55,20 @@ public class AddressBookDBIOTest {
 	}
 	
 	@Test
-	public void givenCityIsEmptyL_WhenQueried_ShouldThrowException(){
+	public void givenCityIsEmpty_WhenQueried_ShouldThrowException(){
 		AddressBookFacilitiesImpl addressBookService=new AddressBookFacilitiesImpl();
 		try {
 			addressBookService.getContactInCity("");
+		}catch(AddressBookException e) {
+			Assert.assertEquals(ExceptionType.EMPTY_STRING,e.exceptionType);	
+		}
+	}
+	
+	@Test
+	public void givenStateIsEmpty_WhenQueried_ShouldThrowException(){
+		AddressBookFacilitiesImpl addressBookService=new AddressBookFacilitiesImpl();
+		try {
+			addressBookService.getContactInState("");
 		}catch(AddressBookException e) {
 			Assert.assertEquals(ExceptionType.EMPTY_STRING,e.exceptionType);	
 		}
