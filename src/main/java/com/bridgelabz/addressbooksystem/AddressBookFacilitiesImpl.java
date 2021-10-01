@@ -13,7 +13,7 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 	List<AddressBook> addressList=new ArrayList<>();
 	HashMap<String, LinkedList<ContactPerson>> contactsByCity=new HashMap<>();;
 	HashMap<String, LinkedList<ContactPerson>> contactsByState=new HashMap<>();;
-	List<ContactPerson> contactList=new ArrayList<>();
+	List<Contact> contactList=new ArrayList<>();
 	
 
 	public void createAddressBook() {
@@ -280,36 +280,37 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 			
 	}
 	
-	public List<ContactPerson> readContactData(IOEnum ioService) {
-        if(ioService.equals(IOEnum.DB_IO))
+	public List<Contact> readContactData(IOEnum ioType) {
+        if(ioType.equals(IOEnum.DB_IO))
     		this.contactList = new AddressBookDBService().readData();
         
     		return this.contactList;
     	}
 
-	public void updateLastName(String firstName, String email) {
-		int result =new AddressBookDBService().updateContactData(firstName,email);
+	public void updateEmail(long phoneNumber, String email) {
+		int result =new AddressBookDBService().updateContactData(phoneNumber,email);
 		if(result == 0) return;
-		ContactPerson contact = this.getContactData(firstName);
+		Contact contact = this.getContactData(phoneNumber);
 		if(contact != null) contact.setEmail(email);
 		}
 
-	private ContactPerson getContactData(String firstName) {
+	private Contact getContactData(long phoneNumber) {
 		return this.contactList.stream()
-				.filter(contact->contact.getFirstName().equals(firstName))
+				.filter(contact->contact.getPhoneNumber()==(phoneNumber))
 				.findFirst()
 				.orElse(null);
 	}
 
-	public boolean checkContactInSyncWithDB(String firstName) {
-		List<ContactPerson> contactDataList = new AddressBookDBService().getContactData(firstName);
-		return contactDataList.get(0).equals(getContactData(firstName));
+	public boolean checkContactInSyncWithDB(long phoneNumber) {
+		List<Contact> contactDataList = new AddressBookDBService().getContactData(phoneNumber);
+		return contactDataList.get(0).equals(getContactData(phoneNumber));
 	}	
 	 
 
-	public List<ContactPerson> getContactsInADateRange(LocalDate startDate, LocalDate endDate) {
+	public List<Contact> getContactsInADateRange(LocalDate startDate, LocalDate endDate) {
 		return new AddressBookDBService().getContactBetweenDateRange(startDate, endDate); 
 	}
+
 }
 					
 			
