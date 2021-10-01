@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.bridgelabz.addressbooksystem.AddressBookException.ExceptionType;
+
 public class AddressBookDBIOTest {	
 	@Test
 	public void givenContactInDB_WhenRetrieved_ShouldMatchContactCount(){
@@ -50,5 +52,16 @@ public class AddressBookDBIOTest {
 		AddressBookFacilitiesImpl addressBookService=new AddressBookFacilitiesImpl();
 		List<Contact> contactList = addressBookService.getContactInState("karnataka");
 		Assert.assertEquals(2,contactList.size());
+	}
+	
+	@Test
+	public void givenCityIsEmptyL_WhenQueried_ShouldThrowException(){
+		AddressBookFacilitiesImpl addressBookService=new AddressBookFacilitiesImpl();
+		try {
+			addressBookService.getContactInCity("");
+		}catch(AddressBookException e) {
+			Assert.assertEquals(ExceptionType.EMPTY_STRING,e.exceptionType);	
+		}
+	
 	}
 }
