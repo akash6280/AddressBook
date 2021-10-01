@@ -15,6 +15,7 @@ import java.util.List;
 public class AddressBookDBService {
 	private PreparedStatement addressBookDataStatement;
 	private PreparedStatement addressBookDataStatementToUpdate;
+	private PreparedStatement addressBookDataStatementForDateRange;
 	private static AddressBookDBService addressBookDBService;
 	
 	public static AddressBookDBService getInstance(){
@@ -118,16 +119,29 @@ public class AddressBookDBService {
 		return contactList;
 	}
 
-	public List<ContactPerson> getContactBetweenDateRange(LocalDate startDate, LocalDate endDate) {
-		String sql = String.format("select * from contact_detail where start between '%s' and '%s' ;",Date.valueOf(startDate),Date.valueOf(endDate));
-		List<ContactPerson> contactList= new ArrayList<>();
-		try(Connection connection = this.getConnection()) {
-			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(sql);
-			contactList=this.getContactData(result);
-		}catch(SQLException e) {
+	public List<Contact> getContactBetweenDateRange(LocalDate startDate, LocalDate endDate) {
+		List<Contact> contactList = null;
+		if (this.addressBookDataStatementForDateRange == null)
+			this.prepareStatementToGetContactBetweenDateRange();
+		try {
+			addressBookDataStatementForDateRange.setDate(1,java.sql.Date.valueOf(startDate));
+			addressBookDataStatementForDateRange.setDate(2,java.sql.Date.valueOf(endDate));
+			ResultSet resultSet = addressBookDataStatementForDateRange.executeQuery();
+			contactList = this.getContactData(resultSet);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return contactList;
+		return contactList;	
+	}
+	
+	private void prepareStatementToGetContactBetweenDateRange() {
+		try {
+			Connection connection = this.getConnection();
+			String sql=	"select * from contact where startDate between ? and ?";
+			addressBookDataStatementForDateRange = connection.prepareStatement(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }
