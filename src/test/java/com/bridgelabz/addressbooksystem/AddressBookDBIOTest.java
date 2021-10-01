@@ -37,4 +37,11 @@ public class AddressBookDBIOTest {
 		List<Contact> contactList = addressBookService.getContactsInADateRange(startDate,endDate);
 		Assert.assertEquals(6, contactList.size());
 	}
+	
+	@Test
+	public void givenCity_WhenQueried_ShouldReturnContactInThatCity(){
+		AddressBookFacilitiesImpl addressBookService=new AddressBookFacilitiesImpl();
+		List<Contact> contactList = addressBookService.getContactInCity("bangalore");
+		Assert.assertEquals(2,contactList.size());
+	}
 }
