@@ -84,4 +84,14 @@ public class AddressBookDBIOTest {
 			Assert.assertEquals(ExceptionType.NULL_STRING,e.exceptionType);	
 		}
 	}
+	
+	@Test
+	public void givenStateIsNull_WhenQueried_ShouldThrowException(){
+		AddressBookFacilitiesImpl addressBookService=new AddressBookFacilitiesImpl();
+		try {
+			addressBookService.getContactInState(null);
+		}catch(AddressBookException e) {
+			Assert.assertEquals(ExceptionType.NULL_STRING,e.exceptionType);	
+		}
+	}
 }
