@@ -151,5 +151,32 @@ public class AddressBookDBService {
 		
 	}
 
+	public  List<Contact> getContactInCity(String city) {
+		if(city.isBlank())
+			throw new AddressBookException(ExceptionType.EMPTY_STRING,"Entered empty string");
+		List<Contact> contactList = null;
+		if (this.addressBookDataStatementForContactInCity == null)
+			this.prepareStatementToGetContactInACity();
+		try {
+			addressBookDataStatementForContactInCity.setString(1,city);
+			ResultSet resultSet = addressBookDataStatementForContactInCity.executeQuery();
+			contactList = this.getContactData(resultSet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch(NullPointerException e) {
+			throw new AddressBookException(ExceptionType.NULL_STRING,"Entered null string");
+		}
+		return contactList;	
+	}
 	
+	private void prepareStatementToGetContactInACity() {
+		try {
+			Connection connection = this.getConnection();
+			String sql=	"select * from contact c,address a where c.contactID=a.contactID and city=?";
+			addressBookDataStatementForContactInCity = connection.prepareStatement(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }
