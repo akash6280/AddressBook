@@ -74,4 +74,14 @@ public class AddressBookDBIOTest {
 		}
 	
 	}
+	
+	@Test
+	public void givenCityIsNull_WhenQueried_ShouldThrowException(){
+		AddressBookFacilitiesImpl addressBookService=new AddressBookFacilitiesImpl();
+		try {
+			addressBookService.getContactInCity(null);
+		}catch(AddressBookException e) {
+			Assert.assertEquals(ExceptionType.NULL_STRING,e.exceptionType);	
+		}
+	}
 }
