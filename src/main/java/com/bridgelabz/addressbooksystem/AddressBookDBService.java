@@ -10,9 +10,11 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+;
 
 public class AddressBookDBService {
 	private PreparedStatement addressBookDataStatement;
+	private PreparedStatement addressBookDataStatementToUpdate;
 	private static AddressBookDBService addressBookDBService;
 	
 	public static AddressBookDBService getInstance(){
@@ -20,20 +22,7 @@ public class AddressBookDBService {
 			addressBookDBService=new AddressBookDBService();
 		return addressBookDBService;
 	}
-
-	public List<ContactPerson> readData() {
-		String sql = "select * from contact_detail;";
-		List<ContactPerson> contactList = new ArrayList<>();
-		try(Connection connection = this.getConnection()) {
-			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(sql);
-			contactList=this.getContactData(result);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return contactList;
-	}
-
+	
 	private Connection getConnection() throws SQLException {
 		String jdbcURL="jdbc:mysql://localhost:3306/addressbook_service?useSSL=false";
 		String userName="root";
@@ -45,30 +34,54 @@ public class AddressBookDBService {
 		return connection;
 	}
 
-
-	public int updateContactData(String firstName, String email) {
-			return this.updateContactDataUsingStatement(firstName,email);
-	}
-
-	private int updateContactDataUsingStatement(String firstName, String email) {
-		String sql = String.format("update contact_detail set email = '%s' where firstName = '%s';",email,firstName);
+	public List<Contact> readData() {
+		String sql = "select * from contact,address where contact.contactID=address.contactID;";
+		List<Contact> contactList = new ArrayList<>();
 		try(Connection connection = this.getConnection()) {
 			Statement statement = connection.createStatement();
-			int result = statement.executeUpdate(sql);
-			return result;
-		}catch(SQLException e) {
+			ResultSet result = statement.executeQuery(sql);
+			contactList=this.getContactData(result);
+		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
-		return 0;
-
+		}
+		return contactList;
 	}
 
-	public List<ContactPerson> getContactData(String firstName) {
-		List<ContactPerson> contactList = null;
+	public int updateContactData(long phoneNumber, String email) {
+			return this.updateContactDataUsingPreparedStatement(phoneNumber,email);
+	}
+	
+	private int updateContactDataUsingPreparedStatement(long phoneNumber,String email) {
+	        if (this.addressBookDataStatementToUpdate == null)
+	            this.prepareStatementForUpdatingContactData();
+	        try {
+	        	addressBookDataStatementToUpdate.setString(1,email);
+	        	addressBookDataStatementToUpdate.setLong(2,phoneNumber);
+	            return addressBookDataStatementToUpdate.executeUpdate();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	      
+			return 0;
+	}
+	
+	private void prepareStatementForUpdatingContactData() {
+        try {
+            Connection connection = this.getConnection();
+            String sql ="update contact set email=? where phoneNumber =?";
+            addressBookDataStatementToUpdate = connection.prepareStatement(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+	public List<Contact> getContactData(long phoneNumber) {
+		List<Contact> contactList = null;
 		if (this.addressBookDataStatement == null)
 			this.prepareStatementForContactData();
 		try {
-			addressBookDataStatement.setString(1, firstName);
+			addressBookDataStatement.setLong(1, phoneNumber);
 			ResultSet resultSet = addressBookDataStatement.executeQuery();
 			contactList = this.getContactData(resultSet);
 		} catch (SQLException e) {
@@ -80,7 +93,7 @@ public class AddressBookDBService {
 	private void prepareStatementForContactData() {
 		try {
 			Connection connection = this.getConnection();
-			String sql=	"SELECT	* FROM contact_detail WHERE firstName = ?";
+			String sql=	"SELECT	* FROM contact l WHERE phoneNumber = ?";
 			addressBookDataStatement = connection.prepareStatement(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -88,19 +101,16 @@ public class AddressBookDBService {
 		
 	}
 	
-	private List<ContactPerson> getContactData(ResultSet result) {
-		List<ContactPerson> contactList = new ArrayList<>();
+	private List<Contact> getContactData(ResultSet resultSet) {
+		List<Contact> contactList = new ArrayList<>();
 		try{
-			while(result.next()) {
-				String firstName = result.getString(1);
-				String lastName = result.getString(2);
-				String address=result.getString(3);
-				String state=result.getString(4);
-				String city=result.getString(5);
-				long zip=result.getInt(6);
-				long phoneNumber = result.getLong(7);
-				String email = result.getString(8);
-				contactList.add(new ContactPerson(firstName,lastName,address,city,state,zip,phoneNumber,email));
+			while(resultSet.next()) {
+				String firstName = resultSet.getString(2);
+				String lastName = resultSet.getString(3);
+				long phoneNumber=resultSet.getLong(4);
+				String email=resultSet.getString(5);
+				LocalDate startDate=resultSet.getDate(6).toLocalDate();
+				contactList.add(new Contact(firstName,lastName,phoneNumber,email,startDate));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
