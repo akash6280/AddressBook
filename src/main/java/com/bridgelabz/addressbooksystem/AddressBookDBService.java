@@ -10,12 +10,15 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.bridgelabz.addressbooksystem.AddressBookException.ExceptionType;
 ;
 
 public class AddressBookDBService {
 	private PreparedStatement addressBookDataStatement;
 	private PreparedStatement addressBookDataStatementToUpdate;
 	private PreparedStatement addressBookDataStatementForDateRange;
+	private PreparedStatement addressBookDataStatementForContactInCity;
 	private static AddressBookDBService addressBookDBService;
 	
 	public static AddressBookDBService getInstance(){
@@ -43,7 +46,7 @@ public class AddressBookDBService {
 			ResultSet result = statement.executeQuery(sql);
 			contactList=this.getContactData(result);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new AddressBookException(ExceptionType.INCORRECT_QUERY,"Cannot execute");
 		}
 		return contactList;
 	}
@@ -53,6 +56,8 @@ public class AddressBookDBService {
 	}
 	
 	private int updateContactDataUsingPreparedStatement(long phoneNumber,String email) {
+			if(email.isEmpty())
+				throw new AddressBookException(ExceptionType.EMPTY_STRING,"Entered empty string");
 	        if (this.addressBookDataStatementToUpdate == null)
 	            this.prepareStatementForUpdatingContactData();
 	        try {
@@ -61,8 +66,9 @@ public class AddressBookDBService {
 	            return addressBookDataStatementToUpdate.executeUpdate();
 	        } catch (SQLException e) {
 	            e.printStackTrace();
+	        } catch(NullPointerException e) {
+	        	throw new AddressBookException(ExceptionType.NULL_STRING,"Entered null string");
 	        }
-	      
 			return 0;
 	}
 	
@@ -72,7 +78,7 @@ public class AddressBookDBService {
             String sql ="update contact set email=? where phoneNumber =?";
             addressBookDataStatementToUpdate = connection.prepareStatement(sql);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new AddressBookException(ExceptionType.UPDATE_FAILED,"Update failed");
         }
     }
 
@@ -144,4 +150,6 @@ public class AddressBookDBService {
 		}
 		
 	}
+
+	
 }
