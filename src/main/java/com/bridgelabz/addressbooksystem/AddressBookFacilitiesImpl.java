@@ -316,6 +316,10 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		return new AddressBookDBService().getContactInCity(city);
 	}
 
+	public List<Contact> getContactInState(String state) {
+		return new AddressBookDBService().getContactInState(state);
+	}
+
 }
 					
 			
