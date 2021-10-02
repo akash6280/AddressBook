@@ -94,4 +94,17 @@ public class AddressBookDBIOTest {
 			Assert.assertEquals(ExceptionType.NULL_STRING,e.exceptionType);	
 		}
 	}
+	
+	@Test
+	public void givenNewContact_WhenAdded_ShouldSynWithDB() {
+		AddressBookFacilitiesImpl addressBookService=new AddressBookFacilitiesImpl();
+		addressBookService.readContactData(IOEnum.DB_IO);
+		Contact contact=new Contact("Rudra", "Mittal", 938473623,"rudra@gmail.com",LocalDate.of(2021,01,03));
+		Address address=new Address("Electronic City","bangalore","karnataka",56421);
+		AddressBookType addressBookType=new AddressBookType(1,"Friends");
+		AddressBook addressBook=new AddressBook(1, "BOOk1");
+		addressBookService.addContactToAddressBook(contact,address,addressBookType,addressBook);
+		boolean result = addressBookService.checkContactInSyncWithDB(938473623);
+		Assert.assertTrue(result);
+		}
 }
