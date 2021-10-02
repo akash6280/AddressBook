@@ -320,6 +320,11 @@ public class AddressBookFacilitiesImpl implements AddressBookFacilitiesIF {
 		return new AddressBookDBService().getContactInState(state);
 	}
 
+	public void addContactToAddressBook(Contact contact, Address address, AddressBookType addressBookType,AddressBook addressBook) {
+		this.contactList.add(new AddressBookDBService().addContactToAddressBook(contact,address,addressBookType,addressBook));
+		
+	}
+
 }
 					
 			
