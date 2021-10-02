@@ -6,7 +6,7 @@ public class Address {
 	public String state;
 	public long zip;
 	
-	public Address(String id, String place, String city, String state, long zip) {
+	public Address(String place, String city, String state, long zip) {
 		super();
 		this.place = place;
 		this.city = city;
