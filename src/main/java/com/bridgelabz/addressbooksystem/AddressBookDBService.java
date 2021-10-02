@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bridgelabz.addressbooksystem.AddressBookException.ExceptionType;
-;
 
 public class AddressBookDBService {
 	private PreparedStatement addressBookDataStatement;
@@ -50,6 +49,124 @@ public class AddressBookDBService {
 			throw new AddressBookException(ExceptionType.INCORRECT_QUERY,"Cannot execute");
 		}
 		return contactList;
+	}
+	
+	public Contact addContactToAddressBook(Contact contact, Address address, AddressBookType addressBookType,AddressBook addressBook) {
+		int contactID = -1;
+		int addressID=-1;
+		
+		Connection connection = null;
+		try{
+			connection = this.getConnection();
+			connection.setAutoCommit(false);
+		}catch (SQLException e) {
+			throw new AddressBookException(ExceptionType.CONNECTION_FAILED,"Could not connect");
+		}
+		
+		try (Statement statement = connection.createStatement()){
+			String sql = String.format("select * from addressbook where addressbook_id = '%s'",addressBook.getBookId());
+			ResultSet result = statement.executeQuery(sql);
+			if(result.next() == false) {
+				throw new AddressBookException(ExceptionType.INCORRECT_QUERY, addressBook.getBookName()+"is not present");
+			}
+		}catch(SQLException e) {
+			throw new AddressBookException(ExceptionType.INCORRECT_QUERY, "query execution failed");
+		}
+		
+		try (Statement statement = connection.createStatement()){
+			String sql = String.format("select * from addressbook_type where addressbook_type_id = '%s'",addressBookType.getTypeID());
+			ResultSet result = statement.executeQuery(sql);
+			if(result.next() == false) {
+				throw new AddressBookException(ExceptionType.INCORRECT_QUERY,addressBookType.getTypeName()+"is not present");
+			}
+		}catch(SQLException e) {
+			throw new AddressBookException(ExceptionType.INCORRECT_QUERY, "query execution failed");
+		}
+		
+		
+		try (Statement statement = connection.createStatement()){
+
+			String sql = String.format("insert into contact (firstName,lastName,phoneNumber,email,startDate) VALUES ('%s', '%s', '%s','%s','%s');",
+								contact.getFirstName(),contact.getLastName(),contact.getPhoneNumber(),contact.getEmail(),Date.valueOf(contact.getStartDate()));
+
+			int rowAffected = statement.executeUpdate(sql, statement.RETURN_GENERATED_KEYS);
+			if(rowAffected == 1) {
+				ResultSet resultSet = statement.getGeneratedKeys();
+				if(resultSet.next()) contactID = resultSet.getInt(1);
+			}  
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		try(Statement statement = connection.createStatement()){
+
+			String sql = String.format("insert into address (contactID,place,city,state,zip)"
+					     + "values ('%s', '%s', '%s', '%s','%s')",contactID,address.getPlace(),address.getCity(),address.getState(),address.getZip());
+			int rowAffected = statement.executeUpdate(sql,statement.RETURN_GENERATED_KEYS);
+			if(rowAffected == 1) {
+				ResultSet resultSet = statement.getGeneratedKeys();
+				if(resultSet.next()) addressID = resultSet.getInt(1);
+			}  		
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		try (Statement statement = connection.createStatement()){
+
+			String sql = String.format("insert into addressbook_contact (addressbook_id,ContactID) VALUES ('%s', '%s');",addressBook.getBookId(),contactID);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		try (Statement statement = connection.createStatement()){
+
+			String sql = String.format("insert into addressbookTypeContact(addressbook_id,addressbook_type_id,ContactID)"
+				     	+"VALUES ('%s', '%s',%s);",	addressBook.getBookId(),addressBookType.getTypeID(),contactID);
+			statement.executeUpdate(sql);
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+
+		
+		try {
+			connection.commit();
+		}catch (SQLException e) {
+				e.printStackTrace();
+		}
+			finally {
+			if(connection!=null)
+				try {
+					connection.close();
+				} catch (SQLException e) { 
+					e.printStackTrace();
+				}
+		}
+		return contact;
 	}
 
 	public int updateContactData(long phoneNumber, String email) {
@@ -209,4 +326,5 @@ public class AddressBookDBService {
 		}
 		
 	}
+
 }
